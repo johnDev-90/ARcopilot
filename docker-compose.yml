@@ -4,14 +4,37 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./server:/app
+      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./server
+          target: /app
+          initial_sync: true
+          ignore:
+            - node_modules/
+            - dist/
+        - action: rebuild
+          path: ./server/package.json
 
   client:
     build: ./client
     ports:
       - "3001:3000"
     volumes:
-      - ./client:/app
+      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./client
+          target: /app
+          initial_sync: true
+          ignore:
+            - node_modules/
+            - .next/
+        - action: rebuild
+          path: ./client/package.json
+     
 
 
             
